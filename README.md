@@ -37,7 +37,9 @@ flowchart LR
     Cliente --> UC5
     Empresa --> UC1
     Empresa --> UC2
+    Empresa --> UC3
     Empresa --> UC4
+    Empresa --> UC5
     Tecnico --> UC6
     Tecnico --> UC7
     Admin --> UC8
@@ -103,9 +105,9 @@ Para cada escenario se documenta: actor, precondiciones, flujo principal, flujos
 
 | | |
 |---|---|
-| **Actor** | Técnico/Ally, Cliente (observador del estado) |
+| **Actor** | Técnico/Ally, Cliente / Empresa (observador del estado) |
 | **Precondiciones** | Solicitud en estado `asignado`. |
-| **Flujo principal** | 1. El técnico consulta `GET /v1/service-requests/{id}`. 2. `POST /v1/service-requests/{id}/start` → transición a `en_progreso`. 3. El cliente observa el cambio de estado en tiempo real (vía Communication Service / canal de notificaciones). 4. `POST /v1/service-requests/{id}/complete` → transición a `completado`. 5. Se produce `service-request.completed`. |
+| **Flujo principal** | 1. El técnico consulta `GET /v1/service-requests/{id}`. 2. `POST /v1/service-requests/{id}/start` → transición a `en_progreso`. 3. El cliente o la empresa que originó la solicitud observa el cambio de estado en tiempo real (vía Communication Service / canal de notificaciones). 4. `POST /v1/service-requests/{id}/complete` → transición a `completado`. 5. Se produce `service-request.completed`. |
 | **Flujos alternos** | Intento de completar sin haber iniciado → rechazo por `State Validation`. |
 | **Servicios participantes** | ServiceRequest Service, Communication Service. |
 | **Datos involucrados** | `service_requests`. |
@@ -148,9 +150,9 @@ Para cada escenario se documenta: actor, precondiciones, flujo principal, flujos
 
 | | |
 |---|---|
-| **Actor** | Cliente |
+| **Actor** | Cliente / Empresa |
 | **Precondiciones** | Solicitud en estado `pagado`. |
-| **Flujo principal** | 1. `POST /v1/service-requests/{id}/rating` (ServiceRequest Service) crea `Rating`. 2. Ranking Service consume el resultado y recalcula la reputación del técnico. |
+| **Flujo principal** | 1. `POST /v1/service-requests/{id}/rating` (ServiceRequest Service) crea `Rating`, asociado al usuario o cuenta corporativa que originó la solicitud. 2. Ranking Service consume el resultado y recalcula la reputación del técnico. |
 | **Flujos alternos** | Intento de calificar sin pago confirmado → rechazo. |
 | **Servicios participantes** | ServiceRequest Service, Ranking Service. |
 | **Datos involucrados** | `ratings`. |
@@ -189,6 +191,8 @@ Para cada escenario se documenta: actor, precondiciones, flujo principal, flujos
 ## 8.3 Diagrama de secuencia — Escenario crítico de extremo a extremo
 
 Cubre el flujo Escenarios 1 → 2 → 4 → 5 → 6 → 7 (registro → matching → ejecución → pago → calificación), que corresponde a la prueba end-to-end de RF-27.
+
+> En este diagrama, el actor `Cliente` representa indistintamente a un **Cliente** o a una **Empresa**, ya que ambos siguen el mismo flujo de seguimiento, pago y calificación sobre sus propias solicitudes.
 
 ```mermaid
 sequenceDiagram
