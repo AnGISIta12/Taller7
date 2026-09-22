@@ -1,12 +1,5 @@
 # 8. Vista de Escenarios (+1)
 
-**Corresponde a:** Product Owner (Angy) + todo el equipo.
-**Estado:** Desarrollada — lista para revisión cruzada con las demás vistas.
-
-> ⚠️ **Nota de validación del Product Owner:** esta vista se construyó usando los servicios, entidades, eventos y endpoints definidos en la Sección 3 (Vista Lógica). Dos observaciones deben resolverse con el equipo antes de consolidar el SDD final:
-> 1. El nombre del producto en este documento es **QUICKPATCH**; el SRS v3.0 vigente usa **CODEBRIDGE**. Debe unificarse.
-> 2. El concepto `Supplier` (Actors Service) no tiene equivalente definido en el SRS, y el concepto que el SRS llama "Proveedor" (empresa que administra técnicos) corresponde a `Ally`, no a `Supplier`. Debe aclararse con Backend antes de que el DD fije los atributos definitivos de `Actors`.
-
 ---
 
 ## 8.1 Diagrama de casos de uso
